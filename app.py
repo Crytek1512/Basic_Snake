@@ -1,12 +1,12 @@
 import tkinter as tk
 from random import randint
+from tkinter import messagebox as msgbx
 from PIL import Image, ImageTk
 
 
 MOVE_INCREMENT = 20
 MOVES_PER_SECOND = 15
 GAME_SPEED = 1000 // MOVES_PER_SECOND
-
 
 class Snake(tk.Canvas):
     def __init__(self):
@@ -37,6 +37,7 @@ class Snake(tk.Canvas):
             self.food_image = Image.open("./assets/food.png")
             self.food = ImageTk.PhotoImage(self.food_image)
         except IOError as error:
+            msgbx.showerror("Error", "Unable to Load Assets")
             root.destroy()
             raise
 
@@ -78,13 +79,10 @@ class Snake(tk.Canvas):
 
     def end_game(self):
         self.delete(tk.ALL)
-        self.create_text(
-            self.winfo_width() / 2,
-            self.winfo_height() / 2,
-            text=f"Game over! You scored {self.score}!",
-            fill="#fff",
-            font=14
-        )
+        text=f"Game over! You scored {self.score}!",
+        fill="#fff",
+        font=14
+        msgbx.showinfo("Game Over!", text)
 
     def move_snake(self):
         head_x_position, head_y_position = self.snake_positions[0]
